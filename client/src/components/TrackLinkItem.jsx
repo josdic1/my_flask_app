@@ -13,10 +13,10 @@ function TrackLinkItem({ trackLink, onViewClick }) {
     return (
         <>
         <tr id={trackLink.id}>
-            <td>{trackLink.track_id}</td>
+            <td>{trackLink.id}</td>
             <td>{trackLink.link_type}</td>
             <td>{trackLink.link_url}</td>
-            <td>{trackLink.id}</td>
+            <td>{trackLink.track_id}</td>
             <td>
                 <button id={trackLink.id} name='view' type="button" onClick={onClick}>view</button>
             </td>
