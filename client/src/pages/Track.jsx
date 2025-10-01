@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import TrackContext from "../contexts/TrackContext";
 import UserContext from "../contexts/UserContext";
 import api from "../api";
+import { formatDateTime } from '../utils/formatters';
 
 function Track() {
   const { id } = useParams();
@@ -66,9 +67,12 @@ function Track() {
       <p>
         **Genre:** {track.genre}
       </p>
-      <p>
-        **Added By:** {trackOwner} on {new Date(track.created_date).toLocaleDateString()}
-      </p>
+     <p>
+  **Added By:** {trackOwner} on {formatDateTime(track.created_date)}
+</p>
+<p>
+  **Modified By:** {trackOwner} on {formatDateTime(track.updated_date)}
+</p>
       
       <hr />
 
