@@ -61,20 +61,14 @@ def create_track_link():
 @jwt_required()
 def delete_track_link(id):
     link_to_delete = TrackLink.query.get(id)
-
     if not link_to_delete:
         return jsonify({"error": "Track link not found"}), 404
-    
-
     parent_track = Track.query.get(link_to_delete.track_id)
-    user_id = get_jwt_identity()  
-
+    user_id = get_jwt_identity()
     if parent_track.user_id != user_id:
         return jsonify({"error": "Not authorized to delete this link"}), 403
-    
     db.session.delete(link_to_delete)
     db.session.commit()
-    
     return jsonify({"message": "Track link deleted"}), 200
 
 # UPDATE #

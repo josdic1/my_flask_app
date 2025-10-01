@@ -49,7 +49,7 @@ class Track(db.Model):
 class TrackLink(db.Model):
     __tablename__ = 'track_links'
     id = db.Column(db.Integer, primary_key=True)
-    track_id = db.Column(db.Integer, db.ForeignKey('tracks.id'), nullable=False)
+    track_id = db.Column(db.Integer, db.ForeignKey('tracks.id', ondelete='CASCADE'), nullable=False)
     link_type = db.Column(db.String(100), nullable=False)
     link_url = db.Column(db.Text, nullable=False)
     created_date = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))

@@ -1,7 +1,7 @@
 from app import db
 from flask import Blueprint, request, jsonify
 from datetime import datetime, timezone
-from models import Track, User
+from models import Track, User, TrackLink
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.exc import IntegrityError
 
@@ -50,18 +50,21 @@ def create_track():
 @tracks_bp.route('/<int:id>', methods=['DELETE'])
 @jwt_required()
 def delete_track(id):
-    user_id = get_jwt_identity()
-    track = Track.query.get(id)
-
-    if not track:
-        return jsonify({"error": "Track not found"}), 404
-    if track.user_id != user_id:
-        return jsonify({"error": "Not authorized"}), 403
-    
-    db.session.delete(track)
-    db.session.commit()
-    return jsonify({"message": "Track deleted"}), 200
-
+    try:
+        user_id = get_jwt_identity()
+        track = Track.query.get(id)
+        if not track:
+            return jsonify({"error": "Track not found"}), 404
+        if track.user_id != user_id:
+            return jsonify({"error": "Not authorized"}), 403
+        TrackLink.query.filter_by(track_id=id).delete()  # Explicitly delete links
+        db.session.delete(track)
+        db.session.commit()
+        return jsonify({"message": "Track deleted"}), 200
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error: {str(e)}")
+        return jsonify({"error": "Internal server error"}), 500
 
 # Corrected update_track function
 @tracks_bp.route('/<int:id>', methods=['PATCH', 'PUT'])

@@ -35,10 +35,7 @@ function TrackList() {
         track={t}
         onAddClick={() => navigate(`/track_links/new/${t.id}`)}
         onViewClick={() => navigate(`/tracks/${t.id}`)}
-        onDeleteClick={() => {
-            deleteTrack(`${t.id}`)
-            navigate('/')
-        }}
+        onDeleteClick={() => deleteTrack(`${t.id}`)}
         onUpdateClick={() => navigate(`/track_links/${t.id}/edit`)}
     />
 ))}

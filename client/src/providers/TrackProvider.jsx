@@ -33,12 +33,20 @@ function TrackProvider({ children }) {
     } catch (err) { setError(err.response?.data || err.message); }
   }
 
-  async function deleteTrack(id) {
+async function deleteTrack(id) {
     try {
-      await api.delete(`/tracks/${id}`);
-      setTracks(prev => prev.filter(t => t.id !== id));
-    } catch (err) { setError(err.response?.data || err.message); }
-  }
+        id = Number(id); // Ensure number
+        await api.delete(`/tracks/${id}`);
+        setTracks(prev => {
+            const newTracks = prev.filter(t => t.id !== id);
+ 
+            return newTracks;
+        });
+    } catch (err) {
+        console.error('Delete error:', err.response || err.message);
+        setError(err.response?.data || err.message);
+    }
+}
 
   return (
     <TrackContext.Provider value={{

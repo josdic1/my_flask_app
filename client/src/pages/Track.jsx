@@ -72,10 +72,10 @@ function Track() {
         **Genre:** {track.genre}
       </p>
      <p>
-  **Added By:** {trackOwner} on {formatDateTime(track.created_date)}
+  **Added By:** {trackOwner} on {track.created_date}
 </p>
 <p>
-  **Modified By:** {trackOwner} on {formatDateTime(track.updated_date)}
+  **Modified By:** {trackOwner} on {track.updated_date}
 </p>
       
       <hr />
