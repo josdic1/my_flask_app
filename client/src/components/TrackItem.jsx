@@ -1,17 +1,26 @@
 
 
-function TrackItem({ track, onAddLinkClick, onViewClick }) {
+function TrackItem({ track, onAddClick, onViewClick, onDeleteClick, onUpdateClick }) {
     const onClick = (e) => {
         const { name, id } = e.target;
-        if (name === "view") {
-            onViewClick(id);
-        } else {
-            if(name=="addLink") {
-             onAddLinkClick(id)
-        } else {
-            alert('button name does not exist 💀');
+            switch(name) {
+                case 'view':
+                    onViewClick(id)
+                    break;
+                case 'add':
+                    onAddClick(id)
+                    break;
+                case 'update':
+                    onUpdateClick(id)
+                    break;
+                case 'delete':
+                    onDeleteClick(id)
+                    break;
+                default:
+                    alert('button name does not exist 💀')
+                    break;
         }}
-    };
+
 
     return (
         <>
@@ -24,8 +33,15 @@ function TrackItem({ track, onAddLinkClick, onViewClick }) {
                 <button id={track.id} name='view' type="button" onClick={onClick}>view</button>
             </td>
                         <td>
-                <button id={track.id} name='addLink' type="button" onClick={onClick}>Add Link</button>
+                <button id={track.id} name='add' type="button" onClick={onClick}>Add Link</button>
             </td>
+            <td>
+                <button id={track.id} name='update' type="button" onClick={onClick}>Update</button>
+            </td>
+                                    <td>
+                <button id={track.id} name='delete' type="button" onClick={onClick}>Delete</button>
+            </td>
+        
         </tr>
         </>
     );

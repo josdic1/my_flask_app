@@ -41,7 +41,7 @@ def create_track_link():
     if not track:
         return jsonify({"error": "Track not found"}), 404
 
-    # ---- optional guard for owners only to add links ----#
+    # ---- optional guard for owners only to add links #
     # if track.user_id != user_id:
     #     return jsonify({"error": "Not authorized to add link to this track"}), 403
 

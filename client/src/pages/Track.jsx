@@ -57,6 +57,10 @@ function Track() {
   ? trackLinkData 
   : <p>No links yet.</p>;
 
+  const onAddLinkClick = () => {
+  navigate(`/track_links/new/${id}`);
+}
+
   return (
     <>
     <div>
@@ -78,6 +82,7 @@ function Track() {
 
       <h3>Links</h3>
       <div>
+        <button type='button' name='add-link' onClick={onAddLinkClick}> Add Link </button>
         {linksDisplay}
       </div>
       

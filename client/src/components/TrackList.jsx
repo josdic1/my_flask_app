@@ -4,20 +4,13 @@ import TrackContext from "../contexts/TrackContext";
 import TrackItem from "./TrackItem";
 
 function TrackList() {
-    const { tracks } = useContext(TrackContext);
+    const { tracks, deleteTrack } = useContext(TrackContext);
     const navigate = useNavigate();
 
     if (!tracks || tracks.length === 0) {
         return <p>The tracks list is empty.</p>;
     }
 
-    function onViewClick(id) {
-        navigate(`/tracks/${id}`);
-    }
-
-function onAddLinkClick(trackId) {
-  navigate(`/track_links/new/${trackId}`);
-}
 
     return (
         <>
@@ -31,17 +24,24 @@ function onAddLinkClick(trackId) {
                         <th>Genre</th>
                         <th>View</th>
                         <th>Add Link</th>
+                        <th>Update</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
                     {tracks.map((t) => (
-                        <TrackItem
-                            key={t.id}
-                            track={t}
-                            onViewClick={onViewClick}
-                            onAddLinkClick={onAddLinkClick}
-                        />
-                    ))}
+    <TrackItem
+        key={t.id}
+        track={t}
+        onAddClick={() => navigate(`/track_links/new/${t.id}`)}
+        onViewClick={() => navigate(`/tracks/${t.id}`)}
+        onDeleteClick={() => {
+            deleteTrack(`${t.id}`)
+            navigate('/')
+        }}
+        onUpdateClick={() => navigate(`/track_links/${t.id}/edit`)}
+    />
+))}
                 </tbody>
             </table>
         </>
