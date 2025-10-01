@@ -1,14 +1,15 @@
 import { useState, useContext } from "react"
 import { useNavigate } from "react-router-dom"
-import TrackContext from "../providers/TrackProvider"
+import TrackContext from "../contexts/TrackContext"
 
 function TrackFormNew() {
-    const { handleNewTrack } = useContext(TrackContext)
+    const {  } = useContext(TrackContext)
     const [ formData, setFormData ] = useState({
         track: "",
         artist: "",
         genre: "",
     })
+    const [newTrack, setNewTrack] = useState(null)
 
     const navigate = useNavigate()
 
@@ -20,23 +21,20 @@ function TrackFormNew() {
         }))
     }
 
-    function onSubmit(e) {
-        e.preventDefault()
+   async function onSubmit(e) {
+        e.preventDefault();
         if (!formData.track) {
-            alert('Track title cannot be empty')
-            return
+            alert("Track title cannot be empty");
+            return;
+        } else {
+            setNewTrack(formData)
+            
         }
 
-        handleNewTrack(formData)
-        navigate('/tracks')
-        setFormData({
-            track: "",
-            artist: "",
-            genre: "",
-        })
     }
 
     return (
+         <>
         <form onSubmit={onSubmit}>
             <div>
                 <label htmlFor="track">Track Title:</label>
@@ -67,12 +65,13 @@ function TrackFormNew() {
                     id="genre"
                     name="genre"
                     onChange={onFormChange}
-                    value={formData.type}
+                    value={formData.genre}
                     placeholder="Enter genre..."
                 />
             </div>
             <button type="submit">Add Track</button>
         </form>
+       </>
     )
 }
 

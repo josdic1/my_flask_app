@@ -15,6 +15,10 @@ function TrackList() {
         navigate(`/tracks/${id}`);
     }
 
+function onAddLinkClick(trackId) {
+  navigate(`/track_links/new/${trackId}`);
+}
+
     return (
         <>
             <h3>Tracks</h3>
@@ -25,6 +29,8 @@ function TrackList() {
                         <th>Title</th>
                         <th>Artist</th>
                         <th>Genre</th>
+                        <th>View</th>
+                        <th>Add Link</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,6 +39,7 @@ function TrackList() {
                             key={t.id}
                             track={t}
                             onViewClick={onViewClick}
+                            onAddLinkClick={onAddLinkClick}
                         />
                     ))}
                 </tbody>

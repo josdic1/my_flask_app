@@ -12,15 +12,13 @@ function Track() {
   const [trackOwner, setTrackOwner] = useState("");
   const navigate = useNavigate();
 
-  // Find the track from TrackContext
   const track = tracks.find((t) => t.id === Number(id));
 
-  // Load links for this track on mount
   useEffect(() => {
     const fetchLinks = async () => {
       try {
         const response = await api.get(`/tracks/${id}`);
-        setTrackLinks(response.data);
+        setTrackLinks(response.data.links || []);
       } catch (error) {
         console.error("Error fetching links:", error);
       }
@@ -31,7 +29,6 @@ function Track() {
     }
   }, [id, track]);
 
-  // Match the track's user to display the owner name
   useEffect(() => {
     if (track) {
       const user = users.find((u) => Number(u.id) === Number(track.user_id));
@@ -47,7 +44,20 @@ function Track() {
     return <p>Track not found</p>;
   }
 
+  const trackLinkData = trackLinks
+     .filter((tl) => Number(tl.track_id) === Number(id)) 
+    .map((tl) => (
+      <p key={tl.id}>
+        {tl.link_type}: {tl.link_url}
+        </p>
+    ))
+
+ const linksDisplay = trackLinkData.length > 0 
+  ? trackLinkData 
+  : <p>No links yet.</p>;
+
   return (
+    <>
     <div>
       <h2>{track.track}</h2>
       <p>
@@ -63,8 +73,12 @@ function Track() {
       <hr />
 
       <h3>Links</h3>
-     
+      <div>
+        {linksDisplay}
+      </div>
+      
     </div>
+    </>
   );
 }
 

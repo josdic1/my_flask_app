@@ -13,6 +13,7 @@ def create_app():
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "fallback-secret")
     app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "fallback-jwt-secret")
 
+    
     # Database + extensions
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"
     db.init_app(app)

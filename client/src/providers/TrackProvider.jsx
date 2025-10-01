@@ -19,7 +19,7 @@ function TrackProvider({ children }) {
     finally { setLoading(false); }
   }
 
-  async function handleNewTrack(trackData) {
+  async function addNewTrack(trackData) {
     try {
       const { data } = await api.post("/tracks", trackData);
       setTracks(prev => [...prev, data]);
@@ -43,12 +43,11 @@ function TrackProvider({ children }) {
   return (
     <TrackContext.Provider value={{
       tracks, loading, error,
-      fetchTracks, handleNewTrack, updateTrack, deleteTrack, setTracks
+      fetchTracks, addNewTrack, updateTrack, deleteTrack, setTracks
     }}>
       {children}
     </TrackContext.Provider>
   );
 }
 
-export { TrackProvider };
-export default TrackContext;
+export default TrackProvider;
