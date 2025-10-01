@@ -17,11 +17,12 @@ with app.app_context():
     db.session.commit() 
 
     track1 = Track(track="Whoa Ghana", artist="Beautiful's Dream", genre="multi", user_id=user1.id)
-    track2 = Track(track="No Hitting", artist="Beautiful's Dream", genre="multi", user_id=user2.id)
-    track3 = Track(track="Burn Halo", artist="Idea", genre="edm", user_id=user1.id)
-    track4 = Track(track="Right Thing", artist="Idea", genre="country", user_id=user2.id)
+    track2 = Track(track="No Hitting", artist="Beautiful's Dream", genre="multi", user_id=user1.id)
+    track3 = Track(track="Donut City", artist="Beautiful's Dream", genre="multi", user_id=user1.id)
+    track4 = Track(track="Can I Get an Intro", artist="Beautiful's Dream", genre="multi", user_id=user1.id)
+    track5 = Track(track="Dorrie's Dumpling", artist="Dorrance", genre="demo", user_id=user2.id)
 
-    db.session.add_all([track1, track2, track3, track4])
+    db.session.add_all([track1, track2, track3, track4, track5])
     db.session.commit() 
 
 
