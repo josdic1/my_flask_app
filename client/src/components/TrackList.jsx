@@ -4,12 +4,13 @@ import TrackContext from "../contexts/TrackContext";
 import TrackItem from "./TrackItem";
 
 function TrackList() {
-    const { tracks, deleteTrack } = useContext(TrackContext);
+    const { tracks, deleteTrack,  } = useContext(TrackContext);
     const navigate = useNavigate();
 
     if (!tracks || tracks.length === 0) {
         return <p>The tracks list is empty.</p>;
     }
+
 
 
     return (
@@ -36,7 +37,7 @@ function TrackList() {
         onAddClick={() => navigate(`/track_links/new/${t.id}`)}
         onViewClick={() => navigate(`/tracks/${t.id}`)}
         onDeleteClick={() => deleteTrack(`${t.id}`)}
-        onUpdateClick={() => navigate(`/track_links/${t.id}/edit`)}
+        onUpdateClick={() =>  navigate(`/tracks/${t.id}/edit`)}
     />
 ))}
                 </tbody>

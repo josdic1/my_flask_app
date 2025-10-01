@@ -1,22 +1,28 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
+import { useParams, useNavigate } from "react-router-dom";
+import TrackContext from "../contexts/TrackContext";
 
-function TrackFormEdit({ initialData, onSave }) {
+function TrackFormEdit() {
     const [ formData, setFormData ] = useState({
         track: "",
         artist: "",
         genre: "",
     });
 
-    // Use a useEffect hook to populate the form with existing data
+    const { tracks, updateTrack } = useContext(TrackContext)
+    const { id } = useParams()
+    const navigate = useNavigate()
+
     useEffect(() => {
-        if (initialData) {
+        const updating = tracks.find(t => t.id === Number(id))
+        if (updating) {
             setFormData({
-                track: initialData.track || "",
-                artist: initialData.artist || "",
-                genre: initialData.genre || "",
-            });
+                track: updating.track,
+                artist: updating.artist,
+                genre: updating.genre
+            })
         }
-    }, [initialData]);
+    }, [id, tracks])
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -26,11 +32,13 @@ function TrackFormEdit({ initialData, onSave }) {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (onSave) {
-            onSave(formData);
+        const result = await updateTrack({ id: Number(id), ...formData });
+        if (result.success) {
+            navigate('/tracks');
         }
+        // Toast will show automatically from the provider!
     };
 
     return (
