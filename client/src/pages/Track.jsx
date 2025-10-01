@@ -6,30 +6,29 @@ import api from "../api";
 import { formatDateTime } from '../utils/formatters';
 
 function Track() {
-  const { id } = useParams();
-  const { tracks } = useContext(TrackContext);
-  const { users } = useContext(UserContext);
-  const [trackLinks, setTrackLinks] = useState([]);
-  const [trackOwner, setTrackOwner] = useState("");
-  const navigate = useNavigate();
+    const { id } = useParams();
+    const { tracks } = useContext(TrackContext);
+    const { users } = useContext(UserContext);
+    const [trackLinks, setTrackLinks] = useState([]);
+    const [trackOwner, setTrackOwner] = useState("");
+    const navigate = useNavigate();
 
-  const track = tracks.find((t) => t.id === Number(id));
+    const track = tracks.find((t) => t.id === Number(id));
 
-  useEffect(() => {
-    const fetchLinks = async () => {
-      try {
-        const response = await api.get(`/tracks/${id}`);
-        setTrackLinks(response.data.links || []);
-      } catch (error) {
-        console.error("Error fetching links:", error);
-      }
-    };
-
-    if (track) {
-      fetchLinks();
-    }
-  }, [id, track]);
-
+    useEffect(() => {
+        const fetchLinks = async () => {
+            try {
+                const response = await api.get(`/tracks/${id}`);
+                setTrackLinks(response.data.links || []);
+            } catch (error) {
+                console.error("Error fetching links:", error);
+            }
+        };
+        if (track) {
+            fetchLinks();
+        }
+    }, [id, track]);
+    
   useEffect(() => {
     if (track) {
       const user = users.find((u) => Number(u.id) === Number(track.user_id));

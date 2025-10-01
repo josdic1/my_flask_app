@@ -20,13 +20,16 @@ function TrackLinkProvider({ children }) {
   }
 
 async function addTrackLink(trackLink) {
-  try {
-    const { data } = await api.post("/track_links", trackLink);
-    setTrackLinks(prev => [...prev, data]);
-  } catch (err) { 
-    setError(err.response?.data || err.message); 
-  }
+    console.log("Adding track link:", trackLink, "Token:", localStorage.getItem("access_token"));
+    try {
+        const { data } = await api.post("/track_links", trackLink);
+        setTrackLinks(prev => [...prev, data]);
+    } catch (err) {
+        console.error("Add track link error:", err.response || err.message);
+        setError(err.response?.data || err.message);
+    }
 }
+
   async function updateTrackLink(id, updatedTrackLink) {
     try {
       const { data } = await api.patch(`/track_links/${id}`, updatedTrackLink);

@@ -3,15 +3,13 @@ import { useNavigate } from "react-router-dom"
 import TrackContext from "../contexts/TrackContext"
 
 function TrackFormNew() {
-    const {  } = useContext(TrackContext)
+    const { addNewTrack } = useContext(TrackContext)
     const [ formData, setFormData ] = useState({
         track: "",
         artist: "",
         genre: "",
     })
-    const [newTrack, setNewTrack] = useState(null)
 
-    const navigate = useNavigate()
 
     const onFormChange = (e) => {
         const { name, value } = e.target
@@ -27,10 +25,20 @@ function TrackFormNew() {
             alert("Track title cannot be empty");
             return;
         } else {
-            setNewTrack(formData)
-            
+            const newTrack = {
+                ...formData
+            }
+            addNewTrack(newTrack)
+            onClear()
         }
+    }
 
+    const onClear = () => {
+        setFormData({
+        track: "",
+        artist: "",
+        genre: "",
+    })
     }
 
     return (
