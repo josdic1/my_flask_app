@@ -26,6 +26,7 @@ def get_track_links_by_id(track_link_id):
 @track_links_bp.route('', methods=['POST'])
 @jwt_required()
 def create_track_link():
+    print("HEADERS:", dict(request.headers)) 
     data = request.get_json()
 
     if not data or "link_type" not in data or not data['link_type'].strip() or "link_url" not in data or not data['link_url'].strip() or "track_id" not in data:
