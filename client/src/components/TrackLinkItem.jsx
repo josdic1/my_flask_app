@@ -4,7 +4,7 @@ function TrackLinkItem({ trackLink, onDeleteTrackLink }) {
   const navigate = useNavigate();
 
   const handleUpdate = () => {
-    navigate(`/track_links/edit/${trackLink.id}`);
+    navigate(`/track_links/${trackLink.id}/edit`);
   };
 
   const handleDelete = () => {

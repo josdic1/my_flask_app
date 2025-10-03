@@ -45,16 +45,21 @@ function TrackLinkProvider({ children }) {
     }
   }
 
-  async function updateTrackLink(id, updatedTrackLink) {
-    try {
-      const { data } = await api.patch(`/track_links/${id}`, updatedTrackLink);
-      setTrackLinks((prev) => prev.map((tl) => (tl.id === id ? data : tl)));
-      showToast("Track link updated successfully!", "success");
-    } catch (err) {
-      setError(err.response?.data || err.message);
-      showToast(err.response?.data?.message || "Failed to update track link", "error");
-    }
+async function updateTrackLink(updatedTrackLink) {
+  try {
+    const { id, ...payload } = updatedTrackLink;
+    const { data } = await api.patch(`/track_links/${id}`, payload, {
+      headers: { "Content-Type": "application/json" }
+    });
+    setTrackLinks((prev) =>
+      prev.map((tl) => (tl.id === id ? data : tl))
+    );
+    showToast("Track link updated successfully!", "success");
+  } catch (err) {
+    setError(err.response?.data || err.message);
+    showToast(err.response?.data?.message || "Failed to update track link", "error");
   }
+}
 
   async function onDeleteTrackLink(id) {
     try {
