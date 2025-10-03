@@ -23,6 +23,8 @@ function TrackList() {
                         <th>Title</th>
                         <th>Artist</th>
                         <th>Genre</th>
+                        <th>Created</th>
+                        <th>Updated</th>
                         <th>View</th>
                         <th>Add Link</th>
                         <th>Update</th>

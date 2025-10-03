@@ -1,4 +1,4 @@
-
+import { formatDateTime } from "../utils/formatters";
 
 function TrackItem({ track, onAddClick, onViewClick, onDeleteClick, onUpdateClick }) {
     const onClick = (e) => {
@@ -29,6 +29,8 @@ function TrackItem({ track, onAddClick, onViewClick, onDeleteClick, onUpdateClic
             <td>{track.track}</td>
             <td>{track.artist}</td>
             <td>{track.genre}</td>
+            <td>{formatDateTime(track.created_date)}</td>
+            <td>{formatDateTime(track.updated_date)}</td>
             <td>
                 <button id={track.id} name='view' type="button" onClick={onClick}>view</button>
             </td>
