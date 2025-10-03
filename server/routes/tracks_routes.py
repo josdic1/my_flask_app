@@ -1,10 +1,9 @@
-from app import db
 from flask import Blueprint, request, jsonify
 from datetime import datetime, timezone
-from models import Track, User, TrackLink
+from ..models import Track, User, TrackLink
+from ..extensions import db
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.exc import IntegrityError
-
 
 tracks_bp = Blueprint('track_bp', __name__, url_prefix='/tracks')
 
