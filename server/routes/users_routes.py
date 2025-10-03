@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from models import User
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
 from extensions import db, bcrypt
 
 
@@ -19,6 +19,7 @@ def get_user_by_id(id):
         return jsonify({"error": "User not found"}), 404
     return jsonify(user.to_dict()), 200
 
+# Create user #
 
 @users_bp.route('', methods=['POST'])
 def create_user():
@@ -46,7 +47,7 @@ def create_user():
     return jsonify(new_user.to_dict()), 201
 
 
-
+# Login #
 @users_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -67,12 +68,23 @@ def login():
         return jsonify({"error": "Invalid credentials"}), 401
     
     access_token = create_access_token(identity=user.id)
+    refresh_token = create_refresh_token(identity=user.id)
 
     return jsonify({
         "message": "Login successful",
         "user": user.to_dict(),
-        "access_token": access_token
+        "access_token": access_token,
+        "refresh_token": refresh_token
     }), 200
+
+# Refresh token #
+
+@users_bp.route('/refresh', methods=['POST'])
+@jwt_required(refresh=True)
+def refresh():
+    current_user = get_jwt_identity()
+    new_access_token = create_access_token(identity=current_user)
+    return jsonify({"access_token": new_access_token}), 200
 
 @users_bp.route('/profile', methods=['GET'])
 @jwt_required()
