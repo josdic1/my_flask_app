@@ -1,13 +1,14 @@
-from .app import create_app
-from .models import User, Track, TrackLink
+from app import create_app
+from models import User, Track, TrackLink # Ensure all models are imported
 from datetime import datetime, timezone
-from .extensions import db, bcrypt
+from extensions import db, bcrypt
 
-def seed_data():
-    """Seeds the database with initial data"""
-    # Clear existing data
+app = create_app()
+
+with app.app_context():
     db.drop_all()
     db.create_all()
+
 
     user1 = User(name="Josh", password=bcrypt.generate_password_hash("pass1").decode("utf-8"))
     user2 = User(name="Dorrie", password=bcrypt.generate_password_hash("pass2").decode("utf-8"))
@@ -24,6 +25,7 @@ def seed_data():
     db.session.add_all([track1, track2, track3, track4, track5])
     db.session.commit() 
 
+
     track_link1 = TrackLink(link_type="youtube", link_url="https://www.youtube.com/watch?v=OKgmt14oonA", track=track1) 
     track_link2 = TrackLink(link_type="youtube", link_url="https://www.youtube.com/watch?v=0MzQ2Pg4Zkc", track=track2) 
     track_link3 = TrackLink(link_type="spotify", link_url="https://open.spotify.com/track/0t4UVXTeUEtFCcMZGjsHPH?si=6e6be9b85c69428a", track=track1) 
@@ -32,9 +34,4 @@ def seed_data():
     db.session.add_all([track_link1, track_link2, track_link3, track_link4])
     db.session.commit()
 
-    print("Database seeded with users, tracks, and track links!")
-
-if __name__ == "__main__":
-    app = create_app()
-    with app.app_context():
-        seed_data()
+    print("✅ Database seeded with users, tracks, and track links (with hashed passwords)!")
