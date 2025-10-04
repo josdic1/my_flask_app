@@ -4,4 +4,4 @@ __pycache__/
 instance/
 *.db
 node_modules/
-.env
+.env.DS_Store

@@ -1,6 +1,8 @@
-from .app import create_app
-from flask_migrate import upgrade
+import sys
 import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from server.app import create_app
+from flask_migrate import upgrade
 
 app = create_app()
 
