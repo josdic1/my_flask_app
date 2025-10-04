@@ -29,22 +29,9 @@ def create_app():
     app.register_blueprint(tracks_bp)
     app.register_blueprint(track_links_bp)
     
-    # Serve React app - catch-all for client-side routing
-    @app.errorhandler(404)
-    def not_found(e):
-        # If it's an API request that actually 404'd, return JSON
-        if request.path.startswith('/users') or request.path.startswith('/tracks') or request.path.startswith('/track_links'):
-            return {"error": "Not found"}, 404
-        # Otherwise serve index.html for React Router
+    # Serve React app for root
+    @app.route('/')
+    def index():
         return send_from_directory(app.static_folder, 'index.html')
     
-    @app.route('/', defaults={'path': ''})
-    @app.route('/<path:path>')
-    def serve(path):
-        # Serve static files if they exist
-        if path and os.path.exists(os.path.join(app.static_folder, path)):
-            return send_from_directory(app.static_folder, path)
-        # Let React Router handle it
-        return send_from_directory(app.static_folder, 'index.html')
-    
-    return app
+    # Handle all 404s - serve React for non-API routes, JSON error for API routes
