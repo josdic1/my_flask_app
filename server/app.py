@@ -9,8 +9,18 @@ import os
 def create_app():
     app = Flask(__name__, static_folder='static', static_url_path='')
     
+    # Ensure instance folder exists (Flask uses this for instance-specific files)
+    try:
+        os.makedirs(app.instance_path, exist_ok=True)
+    except Exception:
+        # If we can't create the folder here, let the DB error surface later with clearer context
+        pass
+
     # Configuration
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "sqlite:///instance/app.db")
+    # Prefer DATABASE_URL from env; fall back to an absolute sqlite file in the instance folder so
+    # Alembic (which may change working directories) can still open the DB file.
+    default_sqlite_path = os.path.join(app.instance_path, 'app.db')
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", f"sqlite:///{default_sqlite_path}")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "super-secret-key")
     app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "super-jwt-secret")
@@ -35,3 +45,4 @@ def create_app():
         return send_from_directory(app.static_folder, 'index.html')
     
     # Handle all 404s - serve React for non-API routes, JSON error for API routes
+    return app
