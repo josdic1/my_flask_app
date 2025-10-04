@@ -1,4 +1,4 @@
-from server.app import create_app
+from .app import create_app
 from flask_migrate import upgrade
 import os
 
