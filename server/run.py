@@ -1,11 +1,9 @@
-# run.py
 from server.app import create_app
 from flask_migrate import upgrade
 import os
 
 app = create_app()
 
-# Only auto-upgrade when DEPLOY_ENV=render
 if os.getenv("DEPLOY_ENV") == "render":
     with app.app_context():
         try:
