@@ -24,19 +24,15 @@ def create_app():
     # Enable CORS
     CORS(app, resources={r"/*": {"origins": "*", "supports_credentials": True}})
     
-    # Register API blueprints FIRST
-    app.register_blueprint(users_bp, url_prefix="/users")
-    app.register_blueprint(tracks_bp, url_prefix="/tracks")
-    app.register_blueprint(track_links_bp, url_prefix="/track_links")
+    # Register blueprints - no url_prefix since blueprints already define them
+    app.register_blueprint(users_bp)
+    app.register_blueprint(tracks_bp)
+    app.register_blueprint(track_links_bp)
     
-    # Serve React app - this should be LAST
+    # Serve React app
     @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')
     def serve(path):
-        # Don't serve static files for API routes
-        if path.startswith('users') or path.startswith('tracks') or path.startswith('track_links'):
-            return {'error': 'Not found'}, 404
-            
         if path and os.path.exists(os.path.join(app.static_folder, path)):
             return send_from_directory(app.static_folder, path)
         return send_from_directory(app.static_folder, 'index.html')
