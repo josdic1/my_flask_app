@@ -45,4 +45,22 @@ def create_app():
         return send_from_directory(app.static_folder, 'index.html')
     
     # Handle all 404s - serve React for non-API routes, JSON error for API routes
+
+    # Health check - basic
+    @app.route('/health')
+    def health():
+        return {"status": "ok"}, 200
+
+    # Readiness check - ensure database connectivity
+    @app.route('/ready')
+    def ready():
+        try:
+            # lightweight DB call
+            from sqlalchemy import text
+            with app.app_context():
+                # Use SQLAlchemy to execute a simple statement
+                db.session.execute(text('SELECT 1'))
+            return {"ready": True}, 200
+        except Exception:
+            return {"ready": False}, 503
     return app

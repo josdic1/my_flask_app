@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: my-flask-app
+    env: python
+    plan: free
+    buildCommand: |
+      python3 -m pip install -r requirements.txt
+      cd client
+      npm ci
+      npm run build
+    startCommand: bin/start.sh
+  healthCheckPath: /ready
+    envVars:
+      - key: DATABASE_URL
+        value: ""
+      - key: SECRET_KEY
+        value: ""
+      - key: JWT_SECRET_KEY
+        value: ""
+      - key: DEPLOY_ENV
+        value: "render"
